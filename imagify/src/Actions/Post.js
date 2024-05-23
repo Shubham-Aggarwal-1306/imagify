@@ -35,15 +35,15 @@ export const getPost = (id) => async dispatch => {
     }
 }
 
-export const createPost = (post) => async dispatch => {
+export const createPost = (data) => async dispatch => {
     try {
+        console.log(data);
         dispatch({ type: 'CreatePostRequest' });
-        const form = new FormData();
-        form.append('title', post.title);
-        form.append('description', post.description);
-        form.append('images', post.image);
-        form.append('type', post.type);
-        const res = await axios.post(`${server}/api/v1/post/upload`, form, {
+        const newForm = new FormData();
+        newForm.append('images', data.image);
+        newForm.append('description', data.description);
+        newForm.append('title', data.title);
+        const res = await axios.post(`${server}/api/v1/post/upload`, newForm, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${document.cookie.split('=')[1]}`
@@ -71,6 +71,7 @@ export const updatePost = (post) => async dispatch => {
         });
         alert(res.data.success ? 'Post updated successfully' : 'Post update failed');
         dispatch({ type: 'UpdatePostSuccess', payload: res.data });
+        window.location.href = `/post/${post.id}`;
     } catch (err) {
         alert(err?.response?.data.message);
         dispatch({

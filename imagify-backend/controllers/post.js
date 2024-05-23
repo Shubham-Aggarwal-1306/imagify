@@ -120,23 +120,26 @@ exports.updatePost = async (req, res) => {
                 message: "Post not found",
             });
         }
-
-        if (post.owner.toString() !== req.user._id.toString()) {
-            return res.status(403).json({
-                success: false,
-                message: "You are not authorized to update this post",
+        if (req.body.title) {
+            post.title = req.body.title;
+        }
+        if (req.body.description) {
+            post.description = req.body.description;
+        }
+        if (req.files) {
+            post.images = req.files.map(file => {
+                return {
+                    url: file.path,
+                    public_id: file.filename,
+                }
             });
         }
-
-        post.title = req.body.title;
-        post.description = req.body.description;
-        post.longitude = req.body.longitude;
-        post.latitude = req.body.latitude;
-        post.location = {
-            type: "Point",
-            coordinates: [req.body.longitude, req.body.latitude],
-        };
-        post.visitor_count = req.body.visitor_count;
+        if (req.body.owner) {
+            post.owner = req.body.owner;
+        }
+        if (req.body.visitor_count) {
+            post.visitor_count = req.body.visitor_count;
+        }
 
         await post.save();
 

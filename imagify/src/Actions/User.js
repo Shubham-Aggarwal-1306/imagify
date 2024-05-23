@@ -4,7 +4,6 @@ import { server } from '../config/config';
 export const loginUser = (email, password) => async (dispatch) => {
     try {
         dispatch({ type: 'LoginRequest' });
-        console.log(email, password);
         const { data } = await axios.post(`${server}/api/v1/login`, { email, password }, {
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +66,6 @@ export const logoutUser = () => async (dispatch) => {
 export const registerUser = (name, email, password) => async (dispatch) => {
     try {
         dispatch({ type: 'RegisterRequest' });
-        console.log(name, email, password);
 
         const { data } = await axios.post(`${server}/api/v1/register`, { name, email, password }, {
             headers: {

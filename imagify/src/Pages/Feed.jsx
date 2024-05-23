@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { createPost, getPosts } from "../Actions/Post";
+import { createPost, getPosts, updatePost } from "../Actions/Post";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 
@@ -12,12 +12,14 @@ export default function Feed() {
   }, []);
 
   const formRef = useRef();
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = new FormData(formRef.current);
-    dispatch(createPost(form));
-    console.log(form.get("image"));
+    const data = {
+      title: formRef.current.title.value,
+      description: formRef.current.description.value,
+      image: document.getElementById("image-upload").files[0],
+    }
+    dispatch(createPost(data));
   };
 
   useEffect(() => {
@@ -25,7 +27,6 @@ export default function Feed() {
     imageUpload.addEventListener("change", () => {
       const image = imageUpload.files[0];
       const reader = new FileReader();
-      console.log(image);
       reader.onload = () => {
         document.getElementById("image-box").classList.add("hidden");
         document.getElementById("image-display").classList.remove("hidden");
@@ -35,11 +36,17 @@ export default function Feed() {
     });
   }, []);
 
-
+  const handleViewPost = (item) => {
+    dispatch(updatePost({
+      visitor_count: item.visitor_count + 1,
+      id: item._id
+    }));
+    
+  };
   return (
     <div className="flex flex-col items-center h-[calc(100vh-75px)] text-center space-y-4 p-4">
       {/* Form for Image Upload */}
-      <form ref={formRef} className="flex items-center justify-center border border-gray-800 space-y-4 rounded-lg mb-4">
+      <form ref={formRef} className="flex items-center justify-center border border-gray-800 space-y-4 rounded-lg mb-4" onSubmit={handleSubmit}>
         {/* Image Box */}
         <div className="flex items-center justify-center border-r border-gray-800 rounded-lg p-4">
           <div className="flex flex-col items-center justify-center space-y-4 border border-gray-600 rounded-lg" id="image-box" style={{ width: "400px", height: "400px" }}>
@@ -52,7 +59,7 @@ export default function Feed() {
             <p className="text-gray-600">Upload Image</p>
             <input
               type="file"
-              name="image"
+              name="image-upload"
               id="image-upload"
               className="hidden"
             />
@@ -90,30 +97,46 @@ export default function Feed() {
           <button
             type="submit"
             className="p-2 border border-white rounded-lg w-full hover:bg-white hover:text-black"
-            onClick={handleSubmit}
           >
             Post
           </button>
         </div>
       </form>
       <hr className="border border-gray-800" style={{ width: "80%" }} />
-      {/* Posts */}
-      <div className="flex flex-col items-center justify-center space-y-4">
+      {/* Posts Cards */}
+      <h1 className="text-2xl font-bold text-white">All Posts</h1>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <h1 className="text-white">{error}</h1>
+      ) : (
+        <>
+          <div className="flex items-center justify-center p-2 flex-wrap">
+            {allPosts.map((post) => (
+              <div
+                key={post._id}
+                className="flex flex-col items-center justify-center space-y-4 p-4 border border-gray-800 rounded-lg m-2 hover:border-white"
+                onClick={() => handleViewPost(post)}
+              >
+                <h1 className="text-2xl font-bold text-white">{post.title}</h1>
+                <div style={{ width: "350px", height: "350px" }} className="flex items-center justify-center border border-gray-600 rounded-lg">
+                  <img src={post.images[0]?.url} alt="" className="w-full h-full object-cover rounded-lg" />
+                </div>
+                <p className="text-gray-300 border border-gray-600 p-2 text-left vertical-top w-full rounded-lg" style={{ height: "50px", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {post.description}
+                </p>
 
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <p className="text-white">{error}</p>
-        ) : (
-          allPosts.map((post) => (
-            <div key={post._id} className="flex flex-col items-center justify-center border border-gray-800 rounded-lg p-4" style={{ width: "80%" }}>
-              <h1 className="text-2xl font-bold text-white">{post.title}</h1>
-              <p className="text-white">{post.description}</p>
-              <img src={post.image} alt={post.title} className="w-full h-96 object-cover rounded-lg" />
-            </div>
-          ))
-        )}
-      </div>
+                {/* Show date and Visitor Count*/}
+                <div className="flex items-center justify-between w-full py-2">
+                  <p className="text-gray-400">{new Date(post.createdAt).toLocaleDateString()}</p>
+                  <p className="text-gray-400">{post.visitor_count} Visitors</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
     </div>
   );
 }
