@@ -63,9 +63,10 @@ export const createPost = (data) => async dispatch => {
 export const updatePost = (post) => async dispatch => {
     try {
         dispatch({ type: 'UpdatePostRequest' });
+        console.log(post);
         const res = await axios.put(`${server}/api/v1/post/${post.id}`, post, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${document.cookie.split('=')[1]}`
             },
         });
@@ -73,7 +74,7 @@ export const updatePost = (post) => async dispatch => {
             dispatch(getPost(post.id));
         }
         dispatch({ type: 'UpdatePostSuccess', payload: res.data });
-        // window.location.href = `/post/${post.id}`;
+        window.location.href = `/post/${post.id}`;
     } catch (err) {
         alert(err?.response?.data.message);
         dispatch({

@@ -41,7 +41,7 @@ export default function Feed() {
     dispatch(updatePost({
       title: item.title,
       description: item.description,
-      visitor_count: item.visitor_count + 1,
+      visitor_count: parseInt(item.visitor_count) + 1,
       id: item._id
     }));
   };
