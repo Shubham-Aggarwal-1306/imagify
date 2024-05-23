@@ -28,10 +28,6 @@ postSchema.pre('save', async function (next) {
     if (!this.isModified('title')) {
         next();
     }
-    this.location = {
-        type: 'Point',
-        coordinates: [this.longitude, this.latitude]
-    }
    let slug = this.title.split(' ').join('-');
     const slugRegEx = new RegExp(`^(${slug})((-[0-9]*$)?)$`, 'i');
 
