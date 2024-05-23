@@ -1,3 +1,117 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    /* Import all the font faces of poppins */
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-Black.ttf') format('truetype');
+        font-weight: 900;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-ExtraBold.ttf') format('truetype');
+        font-weight: 800;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype');
+        font-weight: 200;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-Light.ttf') format('truetype');
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-Medium.ttf') format('truetype');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Poppins';
+        src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+        font-weight: 600;
+        font-style: normal;
+    }
+}
+
+:root {
+    --primary: #a64dff;
+    --button-primary: none;
+    --button-secondary: background-color: #a4508b;
+    --button-secondary-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #171a1b;
+  background-image: linear-gradient(315deg, #171a1b 0%, #000000 74%) !important;
+  width: 100%;
+  min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+    color: #fff;
+    border-radius: 5px;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+button:disabled:hover {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+button:disabled:active {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+button:disabled:focus {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
