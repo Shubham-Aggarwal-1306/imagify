@@ -126,14 +126,6 @@ exports.updatePost = async (req, res) => {
         if (req.body.description) {
             post.description = req.body.description;
         }
-        if (req.files) {
-            post.images = req.files.map(file => {
-                return {
-                    url: file.path,
-                    public_id: file.filename,
-                }
-            });
-        }
         if (req.body.owner) {
             post.owner = req.body.owner;
         }

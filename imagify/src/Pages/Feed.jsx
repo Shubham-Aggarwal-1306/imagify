@@ -37,11 +37,13 @@ export default function Feed() {
   }, []);
 
   const handleViewPost = (item) => {
+    console.log(item);
     dispatch(updatePost({
+      title: item.title,
+      description: item.description,
       visitor_count: item.visitor_count + 1,
       id: item._id
     }));
-    
   };
   return (
     <div className="flex flex-col items-center h-[calc(100vh-75px)] text-center space-y-4 p-4">

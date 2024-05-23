@@ -69,9 +69,11 @@ export const updatePost = (post) => async dispatch => {
                 'Authorization': `Bearer ${document.cookie.split('=')[1]}`
             },
         });
-        alert(res.data.success ? 'Post updated successfully' : 'Post update failed');
+        if (res.data.success) {
+            dispatch(getPost(post.id));
+        }
         dispatch({ type: 'UpdatePostSuccess', payload: res.data });
-        window.location.href = `/post/${post.id}`;
+        // window.location.href = `/post/${post.id}`;
     } catch (err) {
         alert(err?.response?.data.message);
         dispatch({
